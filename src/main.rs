@@ -4,16 +4,19 @@ use ggez::event::{KeyCode, KeyMods};
 use ggez::{conf, event, timer, Context, GameResult};
 use specs::{RunNow, World, WorldExt};
 
+mod audio;
 mod components;
 mod constants;
+mod events;
 mod levels;
 mod resources;
 mod systems;
 
+use audio::initialize_sounds;
 use components::register_components;
 use levels::initialize_level;
 use resources::{register_resources, InputQueue, Time};
-use systems::{GameplayStateSystem, InputSystem, RenderingSystem};
+use systems::{EventSystem, GameplayStateSystem, InputSystem, RenderingSystem};
 
 struct Game {
     world: World,
@@ -37,6 +40,12 @@ impl event::EventHandler for Game {
         {
             let mut time = self.world.write_resource::<Time>();
             time.delta += timer::delta(context);
+        }
+
+        // Process events
+        {
+            let mut es = EventSystem {};
+            es.run_now(&self.world);
         }
 
         Ok(())
@@ -77,6 +86,10 @@ fn main() -> GameResult {
         .add_resource_path(path::PathBuf::from("./resources"));
 
     let (context, event_loop) = &mut context_builder.build()?;
+
+    let mut context = context;
+    initialize_sounds(&mut world, &mut context);
+
     let game = &mut Game { world };
 
     event::run(context, event_loop, game)

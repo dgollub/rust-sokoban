@@ -33,6 +33,7 @@ impl Position {
         Position { x, y, z }
     }
 
+    #[allow(dead_code)]
     pub fn new0() -> Self {
         Self::new(0, 0, 0)
     }
