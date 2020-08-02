@@ -5,15 +5,15 @@ use ggez::{conf, event, Context, GameResult};
 use specs::{RunNow, World, WorldExt};
 
 mod components;
+mod constants;
 mod levels;
 mod resources;
 mod systems;
-mod constants;
 
 use components::register_components;
 use levels::initialize_level;
 use resources::{register_resources, InputQueue};
-use systems::{InputSystem, RenderingSystem};
+use systems::{GameplayStateSystem, InputSystem, RenderingSystem};
 
 struct Game {
     world: World,
@@ -25,6 +25,12 @@ impl event::EventHandler for Game {
         {
             let mut is = InputSystem {};
             is.run_now(&self.world);
+        }
+
+        // Run gameplay state system
+        {
+            let mut gss = GameplayStateSystem {};
+            gss.run_now(&self.world);
         }
 
         Ok(())
