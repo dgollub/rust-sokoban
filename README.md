@@ -5,6 +5,9 @@ A Sokoban game written in Rust.
 Based on [Rust Sokoban](https://sokoban.iolivia.me/).
 
 
+![](resources/sokoban.gif)
+
+
 # Building and Running
 
 You need the Rust programming language installed ([installation guideline](https://doc.rust-lang.org/book/ch01-01-installation.html)).
